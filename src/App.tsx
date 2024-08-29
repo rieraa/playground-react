@@ -1,7 +1,7 @@
-import Preview from './Preview'
-
+import ReactPlayground from './ReactPlayground'
+import './App.scss'
 function App() {
-  return <Preview />
+  return <ReactPlayground />
 }
 
 export default App
