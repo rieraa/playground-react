@@ -1,0 +1,39 @@
+.tabs {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+
+  border-bottom: 1px solid #ddd;
+
+  font-size: 13px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  &::-webkit-scrollbar {
+    height: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #ddd;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+  }
+
+  // todo 文件名过长时会被隐藏
+  .tab {
+    height: 20px;
+    line-height: 20px;
+    padding: 8px 10px 6px;
+
+    color: #888;
+    cursor: pointer;
+  }
+  .active {
+    color: #61dafb;
+    border-bottom: 3px solid #61dafb;
+  }
+}
