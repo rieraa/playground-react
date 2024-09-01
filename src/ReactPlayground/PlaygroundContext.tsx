@@ -23,7 +23,7 @@ export interface PlaygroundContext {
 }
 
 export const PlaygroundContext = createContext<PlaygroundContext>({
-  selectedFileName: 'App.tsx',
+  selectedFileName: 'main.tsx',
 } as PlaygroundContext)
 
 /**
@@ -35,7 +35,7 @@ export const PlaygroundContext = createContext<PlaygroundContext>({
 export const PlaygroundProvider = (props: PropsWithChildren) => {
   const { children } = props
   const [files, setFiles] = useState<Files>(initFiles)
-  const [selectedFileName, setSelectedFileName] = useState('App.tsx')
+  const [selectedFileName, setSelectedFileName] = useState('main.tsx')
 
   const addFile = (name: string) => {
     files[name] = {
