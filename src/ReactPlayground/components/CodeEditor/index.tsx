@@ -10,7 +10,6 @@ function CodeEditor() {
   function onEditorChange(value: string) {
     files[selectedFileName].value = value
     setFiles({ ...files })
-    console.log('🚀 ~ file: index.tsx:16 ~ onEditorChange ~ files:', files)
   }
 
   return (

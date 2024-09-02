@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren, useState } from 'react'
+import { createContext, PropsWithChildren, useState } from 'react'
 import { fileName2Language } from './utils'
 import { initFiles } from './files'
 
