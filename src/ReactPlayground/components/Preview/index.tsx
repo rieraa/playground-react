@@ -16,7 +16,7 @@ function Preview() {
 
   useEffect(() => {
     setCompiledCode(files[selectedFileName].compiledCode);
-  }, [selectedFileName]);
+  }, [selectedFileName, files[selectedFileName].compiledCode]);
 
   // useEffect(() => {
   //   setCompiledCode(files[selectedFileName].value)

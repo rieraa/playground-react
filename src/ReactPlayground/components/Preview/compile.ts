@@ -25,12 +25,13 @@ export const babelTransform = (
   let result = "";
   try {
     // todo 深度优先遍历 二叉树也回顾一下
-    result = transform(code, {
+    result = transform(_code, {
       presets: ["react", "typescript"],
       filename,
-      plugins: [customResolver(files, filename)],
+      plugins: [customResolver(files)],
       retainLines: true,
     }).code!;
+    files[filename].compiledCode = result;
   } catch (e) {
     console.error("编译出错", e);
   }
@@ -44,11 +45,10 @@ export const babelTransform = (
  * 自定义插件自定义导入文件来源
  * @param files
  */
-function customResolver(files: Files, filename: string): PluginObj {
+function customResolver(files: Files): PluginObj {
   return {
     visitor: {
       ImportDeclaration(path) {
-        debugger;
         const modulePath = path.node.source.value;
 
         if (modulePath.startsWith(".")) {
@@ -69,29 +69,13 @@ function customResolver(files: Files, filename: string): PluginObj {
                 },
               ),
             );
-            // files[moduleFile.name].compiledCode = babelTransform(
-            //   moduleFile.name,
-            //   moduleFile.value,
-            //   files,
-            // );
-            console.log(
-              "🥘 ~ file:compile.ts method:ImportDeclaration line:76 param:filename -----",
-              filename,
-            );
-            console.log(
-              "🥘 ~ file:compile.ts method:ImportDeclaration line:72 param:moduleFile.name -----",
-              moduleFile.name,
-            );
-            // console.log(
-            //   "🥘 ~ file:compile.ts method:ImportDeclaration line:73 param:files[moduleFile.name].compiledCode -----",
-            //   files[moduleFile.name].compiledCode,
-            // );
           }
         }
       },
     },
   };
 }
+
 const getModuleFile = (files: Files, modulePath: string) => {
   let moduleName = modulePath.split("./").pop() || "";
   if (!moduleName.includes(".")) {
