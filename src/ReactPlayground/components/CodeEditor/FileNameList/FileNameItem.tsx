@@ -20,6 +20,8 @@ const FileNameItem: React.FC<FileNameItemProps> = (props) => {
     setEditState(true);
   };
 
+  const tabRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     inputRef.current?.focus();
   });
@@ -32,6 +34,7 @@ const FileNameItem: React.FC<FileNameItemProps> = (props) => {
     <div
       onClick={onClick}
       className={`${styles.tab} ${active ? styles.active : ""}`}
+      ref={tabRef}
     >
       {editState ? (
         <input
@@ -39,6 +42,8 @@ const FileNameItem: React.FC<FileNameItemProps> = (props) => {
           ref={inputRef}
           onChange={(e) => setFileName(e.target.value)}
           onBlur={editComplete}
+          className={styles.input}
+          style={{ width: `${tabRef.current.scrollWidth - 20}px` }}
         />
       ) : (
         <span onDoubleClick={editClick}>{fileName}</span>

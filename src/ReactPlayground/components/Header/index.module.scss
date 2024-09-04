@@ -8,6 +8,9 @@
   align-items: center;
   justify-content: space-between;
 
+  position: relative;
+  z-index: 1;
+
   .logo {
     display: flex;
     font-size: 20px;

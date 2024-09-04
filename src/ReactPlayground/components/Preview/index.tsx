@@ -4,6 +4,7 @@ import { compile } from "./compile.ts";
 import styles from "./index.module.scss";
 import iframeRaw from "./iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "ReactPlayground/files.ts";
+import { Editor } from "@monaco-editor/react";
 
 function Preview() {
   const { files, selectedFileName } = useContext(PlaygroundContext);
@@ -37,6 +38,7 @@ function Preview() {
     );
   };
   useEffect(() => {
+    console.log("re compile");
     const compiledCode = compile(files);
     setEntryCompiledCode(compiledCode);
   }, [files]);
@@ -48,24 +50,18 @@ function Preview() {
 
   return (
     <div className={styles.preview}>
-      <iframe
-        src={iframeUrl}
-        style={{
-          width: "100%",
-          height: "50%",
-          border: "none",
-        }}
-      />
+      <iframe src={iframeUrl} className={styles.codeIframe} />
 
-      <div
-        style={{
-          width: "100%",
-          height: "50%",
-          border: "none",
-        }}
-      >
-        <div>{compiledCode}</div>
-      </div>
+      {/*<Editor*/}
+      {/*  style={{*/}
+      {/*    width: "100%",*/}
+      {/*    height: "50%",*/}
+      {/*    border: "none",*/}
+      {/*  }}*/}
+      {/*  path={"aaa.tsx"}*/}
+      {/*  language="javascript"*/}
+      {/*  value={compiledCode}*/}
+      {/*></Editor>*/}
     </div>
   );
 }

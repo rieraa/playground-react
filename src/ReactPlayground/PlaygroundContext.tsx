@@ -51,16 +51,14 @@ export const PlaygroundProvider = (props: PropsWithChildren) => {
     delete files[name];
     setFiles({ ...files });
   };
-
   const updateFileName = (oldFieldName: string, newFieldName: string) => {
-    if (
-      !files[oldFieldName] ||
-      newFieldName === undefined ||
-      newFieldName === null
-    )
-      return;
-
-    const { [oldFieldName]: oldFile, ...restFiles } = files;
+    if (!files[oldFieldName] || !newFieldName) return;
+    debugger;
+    // 修改后的新文件列表
+    const newFiles = { ...files };
+    delete newFiles[oldFieldName];
+    // 旧文件内容
+    const oldFile = files[oldFieldName];
     const newFile = {
       [newFieldName]: {
         name: newFieldName,
@@ -68,7 +66,32 @@ export const PlaygroundProvider = (props: PropsWithChildren) => {
         language: `${fileName2Language(newFieldName)}`,
       },
     };
-    setFiles({ ...newFile, ...restFiles });
+
+    const entries = Object.entries(newFiles);
+    const oldEntries = Object.entries(files);
+    console.log(
+      "🥘 ~ file:PlaygroundContext.tsx method:updateFileName line:73 param:entries -----",
+      entries,
+    );
+    const index = oldEntries.findIndex(([key]) => {
+      console.log(
+        "🥘 ~ file:PlaygroundContext.tsx method: line:77 param:key -----",
+        key,
+      );
+      return key === oldFieldName;
+    });
+    console.log(
+      "🥘 ~ file:PlaygroundContext.tsx method:updateFileName line:74 param:index -----",
+      index,
+    );
+
+    const newEntries = [
+      ...entries.slice(0, index),
+      [newFieldName, newFile[newFieldName]],
+      ...entries.slice(index),
+    ];
+
+    setFiles(Object.fromEntries(newEntries));
   };
 
   return (

@@ -24,7 +24,6 @@
     background-color: #ddd;
   }
 
-  // todo 文件名过长时会被隐藏
   .tab {
     height: 20px;
     line-height: 20px;
@@ -32,7 +31,17 @@
 
     color: #888;
     cursor: pointer;
+
   }
+
+  .input{
+    //box-sizing: border-box;
+    border:0;
+    outline: none;
+    color: #58C4DC;
+  }
+
+
   .active {
     color: #58C4DC;
     border-bottom: 3px solid #58C4DC;

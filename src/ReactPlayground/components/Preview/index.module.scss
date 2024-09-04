@@ -1,4 +1,14 @@
 .preview {
-  padding: 10px 0;
+  display: flex;
+  //padding: 5px 0;
   height: 100%;
+}
+.codeIframe {
+  width: 100%;
+  height: 100%;
+  border:transparent;
+  position: relative;
+  z-index: 0;
+  //opacity: 0;
+  //filter:alpha(opacity=0)
 }
