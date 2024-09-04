@@ -22,7 +22,7 @@ export interface PlaygroundContext {
   removeFile: (fileName: string) => void;
   updateFileName: (oldFieldName: string, newFieldName: string) => void;
 }
-
+// todo context各个不同地方useEffect的逻辑判断等
 export const PlaygroundContext = createContext<PlaygroundContext>({
   selectedFileName: "main.tsx",
 } as PlaygroundContext);
@@ -53,7 +53,6 @@ export const PlaygroundProvider = (props: PropsWithChildren) => {
   };
   const updateFileName = (oldFieldName: string, newFieldName: string) => {
     if (!files[oldFieldName] || !newFieldName) return;
-    debugger;
     // 修改后的新文件列表
     const newFiles = { ...files };
     delete newFiles[oldFieldName];
@@ -61,36 +60,24 @@ export const PlaygroundProvider = (props: PropsWithChildren) => {
     const oldFile = files[oldFieldName];
     const newFile = {
       [newFieldName]: {
+        ...oldFile,
         name: newFieldName,
-        value: oldFile.value,
-        language: `${fileName2Language(newFieldName)}`,
+        language: fileName2Language(newFieldName),
       },
     };
 
     const entries = Object.entries(newFiles);
     const oldEntries = Object.entries(files);
-    console.log(
-      "🥘 ~ file:PlaygroundContext.tsx method:updateFileName line:73 param:entries -----",
-      entries,
-    );
     const index = oldEntries.findIndex(([key]) => {
-      console.log(
-        "🥘 ~ file:PlaygroundContext.tsx method: line:77 param:key -----",
-        key,
-      );
       return key === oldFieldName;
     });
-    console.log(
-      "🥘 ~ file:PlaygroundContext.tsx method:updateFileName line:74 param:index -----",
-      index,
-    );
 
     const newEntries = [
       ...entries.slice(0, index),
       [newFieldName, newFile[newFieldName]],
       ...entries.slice(index),
     ];
-
+    setSelectedFileName(newFieldName);
     setFiles(Object.fromEntries(newEntries));
   };
 
