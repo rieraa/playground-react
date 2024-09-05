@@ -1,27 +1,26 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PlaygroundContext } from "ReactPlayground/PlaygroundContext";
 import { compile } from "./compile.ts";
 import styles from "./index.module.scss";
 import iframeRaw from "./iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "ReactPlayground/files.ts";
-import { Editor } from "@monaco-editor/react";
+import Editor from "ReactPlayground/components/CodeEditor/Editor";
+import PreviewTab from "ReactPlayground/components/Preview/PreviewTab.tsx";
 
-function Preview() {
+function Iframe() {
+  const [iframeUrl, setIframeUrl] = useState("");
   const { files, selectedFileName } = useContext(PlaygroundContext);
   const [entryCompiledCode, setEntryCompiledCode] = useState("");
-  const [compiledCode, setCompiledCode] = useState(
-    files[selectedFileName].compiledCode,
-  );
-
-  const [iframeUrl, setIframeUrl] = useState("");
 
   useEffect(() => {
-    setCompiledCode(files[selectedFileName].compiledCode);
-  }, [selectedFileName, files[selectedFileName].compiledCode]);
+    setIframeUrl(getIframeUrl());
+  }, [files[IMPORT_MAP_FILE_NAME].value, entryCompiledCode]);
 
-  // useEffect(() => {
-  //   setCompiledCode(files[selectedFileName].value)
-  // }, [files, selectedFileName])
+  useEffect(() => {
+    const compiledCode = compile(files);
+    setEntryCompiledCode(compiledCode);
+  }, [files]);
+
   const getIframeUrl = () => {
     const updatedIframe = iframeRaw
       .replace(
@@ -37,33 +36,49 @@ function Preview() {
       new Blob([updatedIframe], { type: "text/html" }),
     );
   };
-  useEffect(() => {
-    console.log("re compile");
-    const compiledCode = compile(files);
-    setEntryCompiledCode(compiledCode);
-  }, [files]);
 
-  //
-  useEffect(() => {
-    setIframeUrl(getIframeUrl());
-  }, [files[IMPORT_MAP_FILE_NAME].value, entryCompiledCode]);
+  return <iframe src={iframeUrl} className={styles.codeIframe} />;
+}
 
+// function CompiledCodePreview() {
+//   const { files, selectedFileName } = useContext(PlaygroundContext);
+//
+//   // 当前选中文件
+//   const [currentFile, setCurrentFile] = useState(files[selectedFileName]);
+//   useEffect(() => {
+//     setCurrentFile(files[selectedFileName]);
+//   }, [files[selectedFileName].compiledCode]);
+//   return (
+//     <Editor
+//       style={{
+//         width: "100%",
+//         height: "50%",
+//         border: "none",
+//       }}
+//       file={currentFile}
+//       isReadonly={true}
+//     ></Editor>
+//   );
+// }
+
+export default function Preview() {
+  type ComponentMapType = {
+    [key: string]: React.ReactNode;
+  };
+  const componentsMap: ComponentMapType = {
+    // COMPILE: <CompiledCodePreview />,
+    PREVIEW: <Iframe />,
+  };
+  const [selectedMode, setSelectedMode] = useState("PREVIEW");
+  const modes = ["PREVIEW"];
   return (
     <div className={styles.preview}>
-      <iframe src={iframeUrl} className={styles.codeIframe} />
-
-      {/*<Editor*/}
-      {/*  style={{*/}
-      {/*    width: "100%",*/}
-      {/*    height: "50%",*/}
-      {/*    border: "none",*/}
-      {/*  }}*/}
-      {/*  path={"aaa.tsx"}*/}
-      {/*  language="javascript"*/}
-      {/*  value={compiledCode}*/}
-      {/*></Editor>*/}
+      <PreviewTab
+        modes={modes}
+        selectedMode={selectedMode}
+        onChange={(mode) => setSelectedMode(mode)}
+      />
+      {componentsMap[selectedMode]}
     </div>
   );
 }
-
-export default Preview;

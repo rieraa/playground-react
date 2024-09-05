@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./index.module.scss";
 
 interface FileNameItemProps {
@@ -8,45 +8,53 @@ interface FileNameItemProps {
   onEditComplete: (name: string) => void;
 }
 
-const FileNameItem: React.FC<FileNameItemProps> = (props) => {
-  const { tab, active, onClick, onEditComplete } = props;
-  // 编辑状态
-  const [editState, setEditState] = useState<boolean>(false);
-  // 文件名
-  const [fileName, setFileName] = useState<string>(tab);
-  // 输入框
-  const inputRef = useRef<HTMLInputElement>(null);
-  const editClick = () => {
+const FileNameItem: React.FC<FileNameItemProps> = ({
+  tab,
+  active,
+  onClick,
+  onEditComplete,
+}) => {
+  const [editState, setEditState] = useState(false); // 编辑状态
+  const [fileName, setFileName] = useState(tab); // 文件名
+  const inputRef = useRef<HTMLInputElement>(null); // 输入框引用
+  const tabRef = useRef<HTMLDivElement>(null); // tab引用
+
+  // 双击进入编辑模式
+  const handleDoubleClick = useCallback(() => {
     setEditState(true);
-  };
+  }, []);
 
-  const tabRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  });
-
-  const editComplete = () => {
+  // 退出编辑模式并触发回调
+  const editComplete = useCallback(() => {
     setEditState(false);
     onEditComplete(fileName);
-  };
+  }, [fileName, onEditComplete]);
+
+  // 当进入编辑模式时，聚焦到输入框
+  useEffect(() => {
+    if (editState) {
+      inputRef.current?.focus();
+    }
+  }, [editState]);
+
   return (
     <div
+      ref={tabRef}
       onClick={onClick}
       className={`${styles.tab} ${active ? styles.active : ""}`}
-      ref={tabRef}
     >
       {editState ? (
         <input
-          value={fileName}
           ref={inputRef}
+          value={fileName}
           onChange={(e) => setFileName(e.target.value)}
           onBlur={editComplete}
           className={styles.input}
-          style={{ width: `${tabRef.current.scrollWidth - 20}px` }}
+          // 使用容器宽度设置输入框宽度
+          style={{ width: tabRef.current?.offsetWidth || "auto" }}
         />
       ) : (
-        <span onDoubleClick={editClick}>{fileName}</span>
+        <span onDoubleClick={handleDoubleClick}>{fileName}</span>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import { transform } from "@babel/standalone";
-import { File, Files } from "../../PlaygroundContext";
+import { File, Files } from "ReactPlayground/files.ts";
 import { ENTRY_FILE_NAME } from "../../files";
 import { PluginObj } from "@babel/core";
 

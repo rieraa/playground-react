@@ -1,18 +1,8 @@
 import { createContext, PropsWithChildren, useState } from "react";
 import { fileName2Language } from "./utils";
-import { initFiles } from "./files";
+import { Files, initFiles } from "./files";
 
-export interface File {
-  name: string;
-  value: string;
-  language: string;
-  compiledCode?: string;
-}
-
-export interface Files {
-  [key: string]: File;
-}
-
+// 全局上下文类型定义
 export interface PlaygroundContext {
   files: Files; // 文件列表
   selectedFileName: string; // 当前选中的文件名
@@ -22,7 +12,7 @@ export interface PlaygroundContext {
   removeFile: (fileName: string) => void;
   updateFileName: (oldFieldName: string, newFieldName: string) => void;
 }
-// todo context各个不同地方useEffect的逻辑判断等
+// 创建全局上下文
 export const PlaygroundContext = createContext<PlaygroundContext>({
   selectedFileName: "main.tsx",
 } as PlaygroundContext);
@@ -51,6 +41,7 @@ export const PlaygroundProvider = (props: PropsWithChildren) => {
     delete files[name];
     setFiles({ ...files });
   };
+
   const updateFileName = (oldFieldName: string, newFieldName: string) => {
     if (!files[oldFieldName] || !newFieldName) return;
     // 修改后的新文件列表
