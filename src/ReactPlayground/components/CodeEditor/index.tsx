@@ -1,29 +1,33 @@
-import { useContext, useEffect, useState } from 'react'
-import Editor from './Editor'
-import FileNameList from './FileNameList'
-import { PlaygroundContext } from '@/ReactPlayground/PlaygroundContext'
-import styles from './index.module.scss'
-import { debounce } from 'lodash-es'
+import { useContext, useState } from "react";
+import Editor from "./Editor";
+import FileNameList from "./FileNameList";
+import { PlaygroundContext } from "@/ReactPlayground/PlaygroundContext";
+import styles from "./index.module.scss";
+import { debounce } from "lodash-es";
 
 export default function CodeEditor() {
-  const { files, selectedFileName, setFiles } = useContext(PlaygroundContext)
-  const [file, setFile] = useState(files[selectedFileName])
-  const onEditorChange = (value: string | undefined) => {
-    if (value !== undefined) {
-      // 添加检查以确保 value 是字符串
-      files[selectedFileName].value = value
-      setFiles({ ...files })
-    }
-  }
+	// 获取文件列表信息
+	const { files, selectedFileName, setFiles } = useContext(PlaygroundContext);
+	// 被选中的文件信息
+	const file = files[selectedFileName];
 
-  useEffect(() => {
-    setFile(files[selectedFileName])
-  }, [files, selectedFileName])
+	// 编辑器修改回调
+	const onEditorChange = (value: string | undefined) => {
+		if (value !== undefined) {
+			// 添加检查以确保 value 是字符串
+			files[selectedFileName].value = value;
+			setFiles({ ...files });
+		}
+	};
 
-  return (
-    <div className={styles.codeEditor}>
-      <FileNameList />
-      <Editor file={file} onChange={debounce(onEditorChange, 1000)} />
-    </div>
-  )
+	return (
+		<div className={styles.codeEditor}>
+			<FileNameList />
+
+			<Editor
+				file={file}
+				onChange={debounce(onEditorChange, 1000)}
+			/>
+		</div>
+	);
 }
