@@ -32,9 +32,7 @@ const FileNameItem: React.FC<FileNameItemProps> = ({
 
   // 当进入编辑模式时，聚焦到输入框
   useEffect(() => {
-    if (editState) {
-      inputRef.current?.focus();
-    }
+    inputRef.current?.focus();
   }, [editState]);
 
   return (

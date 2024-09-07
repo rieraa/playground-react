@@ -7,7 +7,6 @@ interface Props {
   file: EditorFile;
   onChange?: EditorProps["onChange"];
   customOptions?: editor.IStandaloneEditorConstructionOptions;
-  // isReadonly?: boolean;
 }
 
 export default function Editor(props: Props) {
@@ -16,10 +15,12 @@ export default function Editor(props: Props) {
   const handleEditorMount: OnMount = (editor, monaco) => {
     // 设置TypeScript编译器选项
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      // TODO 这里的配置不理解
       jsx: monaco.languages.typescript.JsxEmit.Preserve, // 保留JSX语法
       esModuleInterop: true, // 启用ES模块互操作性
     });
 
+    // 格式化快捷键配置
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
       editor.getAction("editor.action.formatDocument")?.run();
     });

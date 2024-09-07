@@ -4,6 +4,7 @@ import App from "./template/App.tsx?raw";
 import main from "./template/main.tsx?raw";
 import { fileName2Language } from "./utils";
 
+// 文件类型
 export interface File {
   name: string;
   value: string;

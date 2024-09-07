@@ -3,6 +3,12 @@ import { File, Files } from "ReactPlayground/files.ts";
 import { ENTRY_FILE_NAME } from "../../files";
 import { PluginObj } from "@babel/core";
 
+/**
+ * 检查是否引入React模块
+ * @param filename
+ * @param code
+ * @returns
+ */
 export const beforeTransformCode = (filename: string, code: string) => {
   let _code = code;
   const regexReact = /^import\s+React\s+from\s+['"]react['"];?$/m;
@@ -21,7 +27,6 @@ export const babelTransform = (
   files: Files,
 ) => {
   const _code = beforeTransformCode(filename, code);
-  // main.tsx =>
   let result = "";
   try {
     // todo 深度优先遍历 二叉树也回顾一下
@@ -35,9 +40,6 @@ export const babelTransform = (
   } catch (e) {
     console.error("编译出错", e);
   }
-
-  // 1.main
-
   return result;
 };
 
