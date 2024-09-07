@@ -3,7 +3,7 @@ import style from "./index.module.scss";
 interface tabProps {
   selectedMode: string;
   modes: string[];
-  onChange: (mode: string) => void;
+  onChange: (mode: string) => void; // tab切换
 }
 
 function PreviewTab(props: tabProps) {

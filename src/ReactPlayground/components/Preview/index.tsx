@@ -4,17 +4,15 @@ import { compile } from "./compile.ts";
 import styles from "./index.module.scss";
 import iframeRaw from "./iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "ReactPlayground/files.ts";
-import Editor from "ReactPlayground/components/CodeEditor/Editor";
 import PreviewTab from "ReactPlayground/components/Preview/PreviewTab.tsx";
+import Editor from "ReactPlayground/components/CodeEditor/Editor";
 
 function Iframe() {
-  const [iframeUrl, setIframeUrl] = useState("");
-  const { files, selectedFileName } = useContext(PlaygroundContext);
-  const [entryCompiledCode, setEntryCompiledCode] = useState("");
-
+  const { files } = useContext(PlaygroundContext);
+  const [entryCompiledCode, setEntryCompiledCode] = useState(compile(files));
   useEffect(() => {
-    setIframeUrl(getIframeUrl());
-  }, [files[IMPORT_MAP_FILE_NAME].value, entryCompiledCode]);
+    setIframeUrl(getIframeUrl()); // 然后设置新 URL
+  }, [files[IMPORT_MAP_FILE_NAME].value, files]);
 
   useEffect(() => {
     const compiledCode = compile(files);
@@ -37,37 +35,31 @@ function Iframe() {
     );
   };
 
+  const [iframeUrl, setIframeUrl] = useState(getIframeUrl());
+
   return <iframe src={iframeUrl} className={styles.codeIframe} />;
 }
 
-// function CompiledCodePreview() {
-//   const { files, selectedFileName } = useContext(PlaygroundContext);
-//
-//   // 当前选中文件
-//   const [currentFile, setCurrentFile] = useState(files[selectedFileName]);
-//   useEffect(() => {
-//     setCurrentFile(files[selectedFileName]);
-//   }, [files[selectedFileName].compiledCode]);
-//   return (
-//     <Editor
-//       style={{
-//         width: "100%",
-//         height: "50%",
-//         border: "none",
-//       }}
-//       file={currentFile}
-//       isReadonly={true}
-//     ></Editor>
-//   );
-// }
+function CompiledCodePreview() {
+  const { files, selectedFileName } = useContext(PlaygroundContext);
+
+  // 当前选中文件
+  const [currentFile, setCurrentFile] = useState(files[selectedFileName]);
+  useEffect(() => {
+    setCurrentFile(files[selectedFileName]);
+  }, [files, selectedFileName]);
+  return (
+    <Editor file={currentFile} customOptions={{ readOnly: true }}></Editor>
+  );
+}
 
 export default function Preview() {
   type ComponentMapType = {
     [key: string]: React.ReactNode;
   };
   const componentsMap: ComponentMapType = {
-    // COMPILE: <CompiledCodePreview />,
     PREVIEW: <Iframe />,
+    COMPILE: <CompiledCodePreview />,
   };
   const [selectedMode, setSelectedMode] = useState("PREVIEW");
   const modes = ["PREVIEW"];
