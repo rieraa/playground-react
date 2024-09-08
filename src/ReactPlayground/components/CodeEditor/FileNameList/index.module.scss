@@ -27,20 +27,32 @@
 	.tab {
 		height: 20px;
 		line-height: 20px;
-		padding: 8px 12px 6px;
+		padding: 8px 12px 9px;
+		display: flex;
+		align-items: center;
 
 		color: #888;
 		cursor: pointer;
 		span {
 			white-space: nowrap;
 		}
-	}
 
-	.input {
-		//box-sizing: border-box;
-		border: 0;
-		outline: none;
-		color: #58c4dc;
+		.close {
+			margin-left: 7px;
+			width: 10px;
+			height: 10px;
+
+			&:hover {
+				color: red;
+			}
+		}
+
+		.input {
+			//box-sizing: border-box;
+			border: 0;
+			outline: none;
+			color: #58c4dc;
+		}
 	}
 
 	.active {
