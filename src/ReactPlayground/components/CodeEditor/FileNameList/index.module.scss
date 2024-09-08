@@ -1,49 +1,58 @@
 .tabs {
-  width: 100%;
-  display: flex;
-  gap: 20px;
+	width: 100%;
+	display: flex;
+	// gap: 20px;
 
-  border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 
-  font-size: 13px;
+	font-size: 12px;
 
-  overflow-x: auto;
-  overflow-y: hidden;
+	overflow-x: auto;
+	overflow-y: hidden;
 
-  flex:none;
+	flex: none;
 
-  &::-webkit-scrollbar {
-    height: 1px;
-  }
+	&::-webkit-scrollbar {
+		height: 1px;
+	}
 
-  &::-webkit-scrollbar-track {
-    background-color: #ddd;
-  }
+	&::-webkit-scrollbar-track {
+		background-color: #ddd;
+	}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: #ddd;
-  }
+	&::-webkit-scrollbar-thumb {
+		background-color: #ddd;
+	}
 
-  .tab {
-    height: 20px;
-    line-height: 20px;
-    padding: 8px 10px 6px;
+	.tab {
+		height: 20px;
+		line-height: 20px;
+		padding: 8px 12px 6px;
 
-    color: #888;
-    cursor: pointer;
+		color: #888;
+		cursor: pointer;
+		span {
+			white-space: nowrap;
+		}
+	}
 
-  }
+	.input {
+		//box-sizing: border-box;
+		border: 0;
+		outline: none;
+		color: #58c4dc;
+	}
 
-  .input{
-    //box-sizing: border-box;
-    border:0;
-    outline: none;
-    color: #58C4DC;
-  }
+	.active {
+		color: #58c4dc;
+		border-bottom: 3px solid #58c4dc;
+	}
 
-
-  .active {
-    color: #58C4DC;
-    border-bottom: 3px solid #58C4DC;
-  }
+	.addFile {
+		height: 20px;
+		line-height: 20px;
+		padding: 8px 5px 6px;
+		color: #888;
+		cursor: pointer;
+	}
 }

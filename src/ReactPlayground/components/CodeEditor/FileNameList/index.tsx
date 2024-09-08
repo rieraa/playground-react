@@ -1,34 +1,51 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { PlaygroundContext } from "ReactPlayground/PlaygroundContext";
 import FileNameItem from "./FileNameItem";
 import styles from "./index.module.scss";
 function FileNameList() {
-  const [tabs, setTabs] = useState<string[]>([""]);
-  const { files, selectedFileName, setSelectedFileName, updateFileName } =
-    useContext(PlaygroundContext);
+	const {
+		files,
+		selectedFileName,
+		setSelectedFileName,
+		updateFileName,
+		addFile,
+	} = useContext(PlaygroundContext);
+	const tabs: string[] = Object.keys(files);
+	const [creat, setCreate] = useState(false);
+	// 编辑结束回调
+	const onEditComplete = (oldFieldName: string, newFileName: string) => {
+		updateFileName(oldFieldName, newFileName);
+		setCreate(false);
+	};
 
-  const onEditComplete = (name: string) => {
-    updateFileName(selectedFileName, name);
-  };
+	const addTab = () => {
+		const newFileName = "Comp" + Math.random().toString().slice(2, 5) + ".tsx";
+		addFile(newFileName);
+		setSelectedFileName(newFileName);
+		setCreate(true);
+	};
 
-  // 监听files的变化，更新tabs
-  useEffect(() => {
-    setTabs(Object.keys(files));
-  }, [files]);
-
-  return (
-    <div className={styles.tabs}>
-      {tabs.map((tab: string) => (
-        <FileNameItem
-          tab={tab}
-          active={tab === selectedFileName}
-          onClick={() => setSelectedFileName(tab)}
-          onEditComplete={onEditComplete}
-          key={tab}
-        />
-      ))}
-    </div>
-  );
+	return (
+		<div className={styles.tabs}>
+			{tabs.map((tab: string, index: number, arr: string[]) => (
+				<FileNameItem
+					tab={tab}
+					active={tab === selectedFileName}
+					onClick={() => setSelectedFileName(tab)}
+					onEditComplete={onEditComplete}
+					create={creat && index === arr.length - 1}
+					index={index}
+					key={tab}
+				/>
+			))}
+			<div
+				className={styles.addFile}
+				onClick={addTab}
+			>
+				+
+			</div>
+		</div>
+	);
 }
 
 export default FileNameList;
