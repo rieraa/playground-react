@@ -1,16 +1,39 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PlaygroundContext } from "ReactPlayground/PlaygroundContext";
 import { compile } from "./compile.ts";
 import styles from "./index.module.scss";
 import iframeRaw from "./iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "ReactPlayground/files.ts";
 import PreviewTab from "ReactPlayground/components/Preview/PreviewTab.tsx";
-import Editor from "ReactPlayground/components/CodeEditor/Editor";
 import PreviewEditor from "./Editor/PreviewEditor.tsx";
+import { Message } from "../Message/index.tsx";
+
+interface MessageData {
+	data: {
+		type: string;
+		message: string;
+	};
+}
 
 function Iframe() {
 	const { files } = useContext(PlaygroundContext);
 	const entryCompiledCode = compile(files);
+
+	const [error, setError] = useState("");
+
+	const handleMessage = (msg: MessageData) => {
+		const { type, message } = msg.data;
+		if (type === "ERROR") {
+			setError(message);
+		}
+	};
+
+	useEffect(() => {
+		window.addEventListener("message", handleMessage);
+		return () => {
+			window.removeEventListener("message", handleMessage);
+		};
+	}, []);
 
 	const getIframeUrl = () => {
 		const updatedIframe = iframeRaw
@@ -31,10 +54,16 @@ function Iframe() {
 	const iframeUrl = getIframeUrl();
 
 	return (
-		<iframe
-			src={iframeUrl}
-			className={styles.codeIframe}
-		/>
+		<div className={styles.container}>
+			<iframe
+				src={iframeUrl}
+				className={styles.codeIframe}
+			/>
+			<Message
+				type='error'
+				content={error}
+			/>
+		</div>
 	);
 }
 

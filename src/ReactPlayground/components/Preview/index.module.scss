@@ -1,39 +1,41 @@
 .preview {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.container {
+	height: 100%;
+	position: relative;
 }
 .codeIframe {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 0;
-  border: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
 }
 
-.modes{
-  width: 100%;
-  display: flex;
-  gap: 20px;
+.modes {
+	width: 100%;
+	display: flex;
+	gap: 20px;
 
-  border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 
-  font-size: 13px;
+	font-size: 12px;
 
-  overflow-x: auto;
-  overflow-y: hidden;
+	overflow-x: auto;
+	overflow-y: hidden;
 
-  flex:none;
-
+	flex: none;
 }
 
-.mode{
-  height: 20px;
-  line-height: 20px;
-  padding: 8px 10px 6px;
+.mode {
+	height: 20px;
+	line-height: 20px;
+	padding: 8px 10px 6px;
 
-  color: #888;
+	color: #888;
 }
-.active{
-  border-bottom: 3px solid #416F9C;
+.active {
+	border-bottom: 3px solid #416f9c;
 }
